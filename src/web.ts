@@ -13,9 +13,10 @@ export class Web {
 		this.app.use(cors());
 		this.app.post('/api/verify/:code', this.verifyCode.bind(this));
 		this.app.get('/api/analytics', this.analytics.bind(this));
-		this.app.use(express.static(path.join(__dirname, 'frontend/build')));
+		const frontendBuildPath = process.env.STATIC_PATH || path.join(__dirname, 'frontend/build');
+		this.app.use(express.static(frontendBuildPath));
 		this.app.get('*', (req, res) => {
-			res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+			res.sendFile(frontendBuildPath);
 		});
 
 		this.app.listen(this.PORT);
