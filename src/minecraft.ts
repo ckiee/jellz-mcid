@@ -8,23 +8,24 @@ const PLAYER_CODE_EXPIRY = 180000; // 3 minutes in MS
 export class Minecraft {
 	private server: Server;
 	private redis: RedisUtil;
+	private port: number = parseInt(process.env.MC_PORT || "25565");
 
 	constructor(redis: RedisUtil) {
 		this.redis = redis;
 		this.server = this.create();
 		this.server.on('login', this.handleLogin.bind(this));
-		console.log('Minecraft server is listening for connections on port 25565');
+		console.log(`Minecraft server is listening for connections on port ${this.port}`);
 	}
 
 	create() {
 		return createServer({
 			motd: '§6Connect to receive your one-use code!',
 			maxPlayers: 2,
-			version: false,
+			port: this.port,
 			beforePing: (response, client, answerToPing) => {
 				const pingResponse = {
 					version: {
-						name: '1.8-1.19',
+						name: '1.8-1.16',
 						protocol: client.protocolVersion,
 					},
 					players: {
