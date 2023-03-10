@@ -2,13 +2,15 @@
 	"name": "mcid",
 	"version": "1.0.0",
 	"main": "src/server.ts",
+	"bin": "build/server.js",
 	"author": "Daniel Gulic <danielgulic@gmail.com>",
 	"license": "GNU AGPL",
 	"private": true,
 	"scripts": {
 		"start": "NODE_PATH=./build node build/server.js",
 		"build": "tsc -p .",
-		"dev": "ts-node ."
+		"dev": "ts-node .",
+		"postinstall": "tsc && sed -i '1i#!/usr/bin/env node' build/server.js && chmod +x build/server.js"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.10",
